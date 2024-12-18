@@ -1,99 +1,62 @@
-'use client';
-import { DashboardPageLabel } from '../common';
-import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
-import { RotatingLines } from 'react-loader-spinner';
-import { useCalls } from '@/hooks/useCalls';
-import { useMemo } from 'react';
-import { filter, includes, isEmpty, lowerCase } from 'lodash';
-import { RefreshIcon, SearchIcon } from '@/icons';
-import { IDbCall } from '@/types';
-import { Button } from '@/components/ui/button';
-import CallLogsTable from './CallLogsTable';
-import Image from 'next/image';
-import './CallLogs.css';
-const CallLogs = () => {
-const {
-callLogs,
-emptyCallLogs,
-fetchingCallLogs,
-fetchCallLogs,
-reFetchingCallLogs,
-} = useCalls();
-const { register, watch } = useForm();
-const searchQuery = watch('search');
-const filteredCallLogs = useMemo(
-() =>
-isEmpty(searchQuery)
-? filter(callLogs)
-: filter(callLogs, (log: IDbCall) => {
-return includes(lowerCase(log?.from), lowerCase(searchQuery));
-}),
-[callLogs, searchQuery]
-);
-return (
-<div className="relative box-border mr-5">
-<span className="relative flex items-start">
-<DashboardPageLabel
-label="Call Logs"
-description="Check your agent call logs"
-/>
-{!isEmpty(callLogs) && (
-<Button
-variant={'ghost'}
-className="absolute left-[144px] top-[-7px]"
-onClick={() => fetchCallLogs()}
->
-{reFetchingCallLogs ? (
-<RotatingLines
-strokeColor="#000000"
-strokeWidth="5"
-animationDuration="0.75"
-width="24"
-visible
-/>
-) : (
-<RefreshIcon />
-)}
-</Button>
-)}
-</span>
-{emptyCallLogs && (
-<div className="call-logs-empty-illustration">
-<Image
-width={497}
-height={397}
-alt="call-logs"
-src="/assets/Call-Logs.png"
-className="call-logs-empty-illustration-img"
-/>
-</div>
-)}
-{fetchingCallLogs && (
-<div className="w-full flex justify-center items-center mt-24">
-<RotatingLines
-strokeColor="#000000"
-strokeWidth="5"
-animationDuration="0.75"
-width="24"
-visible
-/>
-</div>
-)}
-{!fetchingCallLogs && !emptyCallLogs && (
-<>
-<div className="w-full md:w-[293px] mt-5">
-<Input
-{...register('search')}
-placeholder="Search"
-className="mb-1 h-11"
-rightIcon={<SearchIcon />}
-/>
-</div>
-<CallLogsTable callLogs={filteredCallLogs} />
-</>
-)}
-</div>
-);
-};
-export default CallLogs;
+ # Testassignment 
+
+ Testassignment is a direct messaging platform designed for creators, providing enhanced tools, analytics, and organic monetization opportunities.
+## Features
+- Simplified Communication: Chat with all your followers in one centralized platform
+- Analytics & Management Tools: Better manage and group conversations
+- Monetization: Built-in monetization features for responding to DMs
+- Priority Messages: Customizable fee system for priority messages
+- Social Media Integration: Connect multiple social media platforms
+- Profile Customization: Personalized welcome messages and creator profiles
+## Tech Stack
+- Frontend Framework: Next.js 14
+- UI Components: Mantine UI
+- Styling:
+  - Tailwind CSS
+  - SCSS
+  - PostCSS
+- Authentication: NextAuth.js
+- Database: Prisma ORM
+- Cloud Storage: AWS S3
+- Email Services: Resend
+- Deployment: Vercel
+## Getting Started
+### Prerequisites
+- Node.js (Latest LTS version recommended)
+- npm or yarn
+- PostgreSQL database
+### Installation
+1. Clone the repository:
+   git clone https://github.com/yourusername/testassignment.git
+   cd testassignment
+2. Install dependencies:
+   npm install
+3. Set up environment variables:
+   Create a .env file in the root directory with the following variables:
+   DATABASE_URL="your_database_url"
+   NEXTAUTH_URL="your_nextauth_url"
+   NEXTAUTH_SECRET="your_nextauth_secret"
+4. Run database migrations:
+   npm run db:migrate:run
+### Development
+Start the development server:
+npm run dev
+### Available Scripts
+- npm run dev - Start development server
+- npm run build - Build production bundle
+- npm run start - Start production server
+- npm run lint - Run ESLint
+- npm run db:migrate:create - Create new database migration
+- npm run db:migrate:run - Run database migrations
+- npm run db:studio - Open Prisma Studio
+- npm run db:seed - Seed database with initial data
+## Deployment
+The project is configured for deployment on Vercel with GitHub Actions for CI/CD. The staging deployment workflow is triggered on pushes to the main branch.
+## Contributing
+1. Fork the repository
+2. Create your feature branch (git checkout -b feature/AmazingFeature)
+3. Commit your changes (git commit -m 'Add some AmazingFeature')
+4. Push to the branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
+## License
+This project is proprietary software. All rights reserved.
